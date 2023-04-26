@@ -64,3 +64,25 @@ class Card:
                     enem.health -= self.temp_damage
                 else:
                     enem.shield -= self.temp_damage
+
+    def __str__(self):
+        a = self.name + "\nType: " + self.type + "\nRarity: "  + self.rarity + "\nEnergy: " + str(self.energy)
+        if self.damage != 0:
+            a += "\nDamage: " + str(self.damage)
+            if self.damage_diff != 0:
+                a += " [+-3 range]"
+        if self.block != 0:
+            a += "\nBlock: " + str(self.block)
+            if self.block_diff != 0:
+                a += " [+-3 range]"
+        if self.heal != 0:
+
+            if self.heal_diff != 0
+        if self.crit != 0:
+        self.crit_true = False
+        self.insta_kill = inst
+        self.temp_damage = 0
+        self.temp_block = 0
+        self.temp_heal = 0
+        self.leech = l
+        return a

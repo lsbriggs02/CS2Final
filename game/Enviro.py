@@ -39,10 +39,22 @@ class Enviro:
                         Leeching_Attack(), Leeching_Attack(), Leeching_Attack(), Rest_And_Recover(), Rest_And_Recover(),
                         Unstable_Potions(), Unstable_Potions()]
         self.hand = []
+        self.add_cards = []
         self.encounter_deck = self.curdeck[:]
         self.enemy_list = []
         self.discard_deck = []
         self.screen = None
+        self.card_num1 = None
+        self.card_num2 = None
+        self.card_num3 = None
+        self.card_num4 = None
+        self.card_num5 = None
+        self.next_butt = None
+        self.pcard_1 = None
+        self.pcard_2 = None
+        self.pcard_3 = None
+        self.pcard_4 = None
+        self.choosing = False
 
     @staticmethod
     def render_button(screen, button, color):
@@ -62,34 +74,44 @@ class Enviro:
 
     def next(self):
         _ = 0
+        # Reset acting deck with current deck
         if len(self.encounter_deck) <= 5:
             self.encounter_deck = self.curdeck[:]
+        # Fill up add cards while removing from encounter deck
         while _ < 5:
             rand_card_num = randint(0, (len(self.encounter_deck) - 1))
             print(self.curdeck)
-            print(len(self.encounter_deck))
-            print(rand_card_num)
             self.add_cards.append(self.encounter_deck[rand_card_num])
             self.encounter_deck.remove(self.encounter_deck[rand_card_num])
             _ += 1
-        self.hand = self.add_cards
+        # Reset hand with the new cards
+        self.hand = self.add_cards[:]
+        # Reset add cards to none
         self.add_cards = []
+        # Enemy makes a move
         self.enemy_list[0].act(self.player, random.randint(0, 5))
+        # Reset play stats and update screen
         self.player.energy = 3
         self.player.shield = 0
         self.player_stats(self.player, self.enemy_list[0], self.screen)
+        # Reset names with new cards
+        self.card_num1 = _Button((0, 550, 140, 30), self.hand[0].name)
+        self.card_num2 = _Button((140, 550, 140, 30), self.hand[1].name)
+        self.card_num3 = _Button((280, 550, 140, 30), self.hand[2].name)
+        self.card_num4 = _Button((420, 550, 140, 30), self.hand[3].name)
+        self.card_num5 = _Button((560, 550, 140, 30), self.hand[4].name)
+        # Reset buttons to render with the new names
+        Enviro.render_button(self.screen, self.card_num1, (255, 255, 255))
+        Enviro.render_button(self.screen, self.card_num2, (255, 255, 255))
+        Enviro.render_button(self.screen, self.card_num3, (255, 255, 255))
+        Enviro.render_button(self.screen, self.card_num4, (255, 255, 255))
+        Enviro.render_button(self.screen, self.card_num5, (255, 255, 255))
 
-        card_num1 = _Button((0, 550, 140, 30), self.hand[0].name)
-        card_num2 = _Button((140, 550, 140, 30), self.hand[1].name)
-        card_num3 = _Button((280, 550, 140, 30), self.hand[2].name)
-        card_num4 = _Button((420, 550, 140, 30), self.hand[3].name)
-        card_num5 = _Button((560, 550, 140, 30), self.hand[4].name)
-
-        Enviro.render_button(self.screen, card_num1, (255, 255, 255))
-        Enviro.render_button(self.screen, card_num2, (255, 255, 255))
-        Enviro.render_button(self.screen, card_num3, (255, 255, 255))
-        Enviro.render_button(self.screen, card_num4, (255, 255, 255))
-        Enviro.render_button(self.screen, card_num5, (255, 255, 255))
+        self.hand[0].is_not_used = True
+        self.hand[1].is_not_used = True
+        self.hand[2].is_not_used = True
+        self.hand[3].is_not_used = True
+        self.hand[4].is_not_used = True
 
     @staticmethod
     def player_stats(play, enem, screen):
@@ -104,6 +126,18 @@ class Enviro:
         Enviro.render_button(screen, s, (255, 255, 255))
         Enviro.render_button(screen, eh, (255, 255, 255))
         Enviro.render_button(screen, es, (255, 255, 255))
+
+    def print_cards(self):
+        self.pcard_1 = _Button((70, 350, 140, 30), self.add_cards[0])
+        self.pcard_2 = _Button((220, 350, 140, 30), self.add_cards[1])
+        self.pcard_3 = _Button((350, 350, 140, 30), self.add_cards[2])
+        self.pcard_4 = _Button((600, 350, 140, 30), self.add_cards[3])
+
+    def print_cards_undo(self):
+        pass
+
+    def move_on(self):
+        self.print_cards()
 
     def show(self):
         # calculate some convenient variables
@@ -149,20 +183,20 @@ class Enviro:
         self.screen = screen2
 
         # define buttons
-        card_num1 = _Button((0, 550, 140, 30), self.hand[0].name)
-        card_num2 = _Button((140, 550, 140, 30), self.hand[1].name)
-        card_num3 = _Button((280, 550, 140, 30), self.hand[2].name)
-        card_num4 = _Button((420, 550, 140, 30), self.hand[3].name)
-        card_num5 = _Button((560, 550, 140, 30), self.hand[4].name)
-        next_butt = _Button((710, 550, 80, 30), 'Next')
+        self.card_num1 = _Button((0, 550, 140, 30), self.hand[0].name)
+        self.card_num2 = _Button((140, 550, 140, 30), self.hand[1].name)
+        self.card_num3 = _Button((280, 550, 140, 30), self.hand[2].name)
+        self.card_num4 = _Button((420, 550, 140, 30), self.hand[3].name)
+        self.card_num5 = _Button((560, 550, 140, 30), self.hand[4].name)
+        self.next_butt = _Button((710, 550, 80, 30), 'Next')
 
         # add buttons
-        Enviro.render_button(screen2, card_num1, (255, 255, 255))
-        Enviro.render_button(screen2, card_num2, (255, 255, 255))
-        Enviro.render_button(screen2, card_num3, (255, 255, 255))
-        Enviro.render_button(screen2, card_num4, (255, 255, 255))
-        Enviro.render_button(screen2, card_num5, (255, 255, 255))
-        Enviro.render_button(screen2, next_butt, (255, 255, 255))
+        Enviro.render_button(screen2, self.card_num1, (255, 255, 255))
+        Enviro.render_button(screen2, self.card_num2, (255, 255, 255))
+        Enviro.render_button(screen2, self.card_num3, (255, 255, 255))
+        Enviro.render_button(screen2, self.card_num4, (255, 255, 255))
+        Enviro.render_button(screen2, self.card_num5, (255, 255, 255))
+        Enviro.render_button(screen2, self.next_butt, (255, 255, 255))
 
         hover_color = (200, 200, 200)
         default_color = (255, 255, 255)
@@ -177,117 +211,131 @@ class Enviro:
                 # handle hover effects
                 if event.type == pygame.MOUSEMOTION:
 
-                    if Enviro.inside(event.pos, card_num1.rect):
-                        if not card_num1.hover:
+                    if Enviro.inside(event.pos, self.card_num1.rect):
+                        if not self.card_num1.hover:
                             if self.hand[0].is_not_used:
-                                Enviro.render_button(screen2, card_num1, hover_color)
+                                Enviro.render_button(screen2, self.card_num1, hover_color)
                             else:
-                                Enviro.render_button(screen2, card_num1, used_hover_color)
-                            card_num1.hover = True
-                    elif card_num1.hover:
+                                Enviro.render_button(screen2, self.card_num1, used_hover_color)
+                            self.card_num1.hover = True
+                    elif self.card_num1.hover:
                         if self.hand[0].is_not_used:
-                            Enviro.render_button(screen2, card_num1, default_color)
+                            Enviro.render_button(screen2, self.card_num1, default_color)
                         else:
-                            Enviro.render_button(screen2, card_num1, used_color)
-                        card_num1.hover = False
+                            Enviro.render_button(screen2, self.card_num1, used_color)
+                        self.card_num1.hover = False
 
-                    if Enviro.inside(event.pos, card_num2.rect):
-                        if not card_num2.hover:
+                    if Enviro.inside(event.pos, self.card_num2.rect):
+                        if not self.card_num2.hover:
                             if self.hand[1].is_not_used:
-                                Enviro.render_button(screen2, card_num2, hover_color)
+                                Enviro.render_button(screen2, self.card_num2, hover_color)
                             else:
-                                Enviro.render_button(screen2, card_num2, used_hover_color)
-                            card_num2.hover = True
-                    elif card_num2.hover:
+                                Enviro.render_button(screen2, self.card_num2, used_hover_color)
+                            self.card_num2.hover = True
+                    elif self.card_num2.hover:
                         if self.hand[1].is_not_used:
-                            Enviro.render_button(screen2, card_num2, default_color)
+                            Enviro.render_button(screen2, self.card_num2, default_color)
                         else:
-                            Enviro.render_button(screen2, card_num2, used_color)
-                        card_num2.hover = False
+                            Enviro.render_button(screen2, self.card_num2, used_color)
+                        self.card_num2.hover = False
 
-                    if Enviro.inside(event.pos, card_num3.rect):
-                        if not card_num3.hover:
+                    if Enviro.inside(event.pos, self.card_num3.rect):
+                        if not self.card_num3.hover:
                             if self.hand[2].is_not_used:
-                                Enviro.render_button(screen2, card_num3, hover_color)
+                                Enviro.render_button(screen2, self.card_num3, hover_color)
                             else:
-                                Enviro.render_button(screen2, card_num3, used_hover_color)
-                            card_num3.hover = True
-                    elif card_num3.hover:
+                                Enviro.render_button(screen2, self.card_num3, used_hover_color)
+                            self.card_num3.hover = True
+                    elif self.card_num3.hover:
                         if self.hand[2].is_not_used:
-                            Enviro.render_button(screen2, card_num3, default_color)
+                            Enviro.render_button(screen2, self.card_num3, default_color)
                         else:
-                            Enviro.render_button(screen2, card_num3, used_color)
-                        card_num3.hover = False
+                            Enviro.render_button(screen2, self.card_num3, used_color)
+                        self.card_num3.hover = False
 
-                    if Enviro.inside(event.pos, card_num4.rect):
-                        if not card_num4.hover:
+                    if Enviro.inside(event.pos, self.card_num4.rect):
+                        if not self.card_num4.hover:
                             if self.hand[3].is_not_used:
-                                Enviro.render_button(screen2, card_num4, hover_color)
+                                Enviro.render_button(screen2, self.card_num4, hover_color)
                             else:
-                                Enviro.render_button(screen2, card_num4, used_hover_color)
-                            card_num4.hover = True
-                    elif card_num4.hover:
+                                Enviro.render_button(screen2, self.card_num4, used_hover_color)
+                            self.card_num4.hover = True
+                    elif self.card_num4.hover:
                         if self.hand[3].is_not_used:
-                            Enviro.render_button(screen2, card_num4, default_color)
+                            Enviro.render_button(screen2, self.card_num4, default_color)
                         else:
-                            Enviro.render_button(screen2, card_num4, used_color)
-                        card_num4.hover = False
+                            Enviro.render_button(screen2, self.card_num4, used_color)
+                        self.card_num4.hover = False
 
-                    if Enviro.inside(event.pos, card_num5.rect):
-                        if not card_num5.hover:
+                    if Enviro.inside(event.pos, self.card_num5.rect):
+                        if not self.card_num5.hover:
                             if self.hand[4].is_not_used:
-                                Enviro.render_button(screen2, card_num5, hover_color)
+                                Enviro.render_button(screen2, self.card_num5, hover_color)
                             else:
-                                Enviro.render_button(screen2, card_num5, used_hover_color)
-                            card_num5.hover = True
-                    elif card_num5.hover:
+                                Enviro.render_button(screen2, self.card_num5, used_hover_color)
+                            self.card_num5.hover = True
+                    elif self.card_num5.hover:
                         if self.hand[4].is_not_used:
-                            Enviro.render_button(screen2, card_num5, default_color)
+                            Enviro.render_button(screen2, self.card_num5, default_color)
                         else:
-                            Enviro.render_button(screen2, card_num5, used_color)
-                        card_num5.hover = False
+                            Enviro.render_button(screen2, self.card_num5, used_color)
+                        self.card_num5.hover = False
 
-                    if Enviro.inside(event.pos, next_butt.rect):
-                        if not next_butt.hover:
-                            Enviro.render_button(screen2, next_butt, hover_color)
-                            next_butt.hover = True
-                    elif next_butt.hover:
-                        Enviro.render_button(screen2, next_butt, default_color)
-                        next_butt.hover = False
+                    if Enviro.inside(event.pos, self.next_butt.rect):
+                        if not self.next_butt.hover:
+                            Enviro.render_button(screen2, self.next_butt, hover_color)
+                            self.next_butt.hover = True
+                    elif self.next_butt.hover:
+                        Enviro.render_button(screen2, self.next_butt, default_color)
+                        self.next_butt.hover = False
 
                 # handle mouse clicks in buttons
                 if event.type == pygame.MOUSEBUTTONUP:
-                    if Enviro.inside(event.pos, card_num1.rect):
+                    if self.choosing:
+                        if Enviro.inside(event.pos, self.pcard_1.rect):
+                            self.curdeck.append(self.pcard_1)
+                            self.choosing = False
+                        if Enviro.inside(event.pos, self.pcard_2.rect):
+                            self.curdeck.append(self.pcard_2)
+                            self.choosing = False
+                        if Enviro.inside(event.pos, self.pcard_3.rect):
+                            self.curdeck.append(self.pcard_3)
+                            self.choosing = False
+                        if Enviro.inside(event.pos, self.pcard_4.rect):
+                            self.curdeck.append(self.pcard_4)
+                            self.choosing = False
+
+                    if Enviro.inside(event.pos, self.card_num1.rect):
                         self.hand[0].act(self.player, self.enemy_list[0])
                         if self.enemy_list[0].health <= 0:
                             self.enemy_list.remove(self.enemy_list[0])
                         self.player_stats(self.player, self.enemy_list[0], screen2)
 
-                    elif Enviro.inside(event.pos, card_num2.rect):
+                    elif Enviro.inside(event.pos, self.card_num2.rect):
                         self.hand[1].act(self.player, self.enemy_list[0])
                         if self.enemy_list[0].health <= 0:
                             self.enemy_list.remove(self.enemy_list[0])
                         self.player_stats(self.player, self.enemy_list[0], screen2)
 
-                    elif Enviro.inside(event.pos, card_num3.rect):
+                    elif Enviro.inside(event.pos, self.card_num3.rect):
                         self.hand[2].act(self.player, self.enemy_list[0])
                         if self.enemy_list[0].health <= 0:
                             self.enemy_list.remove(self.enemy_list[0])
                         self.player_stats(self.player, self.enemy_list[0], screen2)
 
-                    elif Enviro.inside(event.pos, card_num4.rect):
+                    elif Enviro.inside(event.pos, self.card_num4.rect):
                         self.hand[3].act(self.player, self.enemy_list[0])
                         if self.enemy_list[0].health <= 0:
                             self.enemy_list.remove(self.enemy_list[0])
                         self.player_stats(self.player, self.enemy_list[0], screen2)
 
-                    elif Enviro.inside(event.pos, card_num5.rect):
+                    elif Enviro.inside(event.pos, self.card_num5.rect):
                         self.hand[4].act(self.player, self.enemy_list[0])
                         if self.enemy_list[0].health <= 0:
                             self.enemy_list.remove(self.enemy_list[0])
                         self.player_stats(self.player, self.enemy_list[0], screen2)
 
-                    elif Enviro.inside(event.pos, next_butt.rect):
+                    elif Enviro.inside(event.pos, self.next_butt.rect):
                         Enviro.next(self)
                     else:
                         if len(self.enemy_list) == 0:
