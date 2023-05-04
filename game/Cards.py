@@ -3,7 +3,7 @@ from random import randint
 
 class Card:
 
-    def __init__(self, n, t, r, e, s, d=0, dd=0, b=0, bb=0, h=0, hh=0, c=0, inst=False, l=False):
+    def __init__(self, n, t, r, e, s, d=0, dd=0, b=0, bb=0, h=0, hh=0, c=0, inst=0, l=False):
         self.name = n
         self.type = t
         self.rarity = r
@@ -27,20 +27,26 @@ class Card:
     def act(self, charac, enem):
         if charac.energy - self.energy > -1 and self.is_not_used == True:
             self.is_not_used = False
-            if self.heal_diff > 0:
+            if self.heal > 0:
                 self.temp_heal = randint(self.heal - self.heal_diff, self.heal + self.heal_diff)
             else:
-                self.temp_heal = self.heal
+                self.temp_heal = randint(0, self.heal + self.heal_diff)
             self.temp_damage = 0
-            self.temp_damage = randint(self.damage - self.damage_diff, self.damage + self.damage_diff)
+            if self.damage > 0:
+                self.temp_damage = randint(self.damage - self.damage_diff, self.damage + self.damage_diff)
+            else:
+                self.temp_damage = randint(0, self.damage + self.damage_diff)
             if self.leech:
-                self.temp_heal = self.temp_damage
+                self.temp_heal = self.temp_damage * 0.5
             self.temp_block = 0
-            self.temp_block = randint(self.block - self.block_diff, self.block + self.block_diff)
+            if self.block_diff > 0:
+                self.temp_block = randint(self.block - self.block_diff, self.block + self.block_diff)
+            else:
+                self.temp_block = randint(0, self.block + self.block_diff)
             charac.health += self.temp_heal
             charac.shield += self.block
             charac.energy -= self.energy
-            if self.insta_kill:
+            if self.insta_kill > randint(0, 10):
                 enem.shield -= enem.shield
                 enem.health -= enem.health
             if self.crit > 0:
@@ -66,23 +72,36 @@ class Card:
                     enem.shield -= self.temp_damage
 
     def __str__(self):
-        a = self.name + "\nType: " + self.type + "\nRarity: "  + self.rarity + "\nEnergy: " + str(self.energy)
+        a = str(self.name) + "\nType: " + str(self.type) + "\nRarity: "  + str(self.rarity) + "\nEnergy: " + str(self.energy)
         if self.damage != 0:
             a += "\nDamage: " + str(self.damage)
             if self.damage_diff != 0:
-                a += " [+-3 range]"
+                a += " [±" + str(self.damage_diff) + " range]"
+        else:
+            if self.damage_diff != 0:
+                a += "\nDamage: 0[+" + str(self.damage_diff) + " range]"
         if self.block != 0:
             a += "\nBlock: " + str(self.block)
             if self.block_diff != 0:
-                a += " [+-3 range]"
+                a += " [±" + str(self.block_diff) + " range]"
+        else:
+            if self.block_diff != 0:
+                a += "\nBlock: 0[+" + str(self.block_diff) + " range]"
         if self.heal != 0:
-
-            if self.heal_diff != 0
+            a += "\nHeal: " + str(self.heal)
+            if self.heal_diff != 0:
+                a += " [±" + str(self.heal_diff) + " range]"
+        else:
+            if self.heal_diff != 0:
+                a += "\nHeal: 0[+" + str(self.heal_diff) + " range]"
         if self.crit != 0:
-        self.crit_true = False
-        self.insta_kill = inst
-        self.temp_damage = 0
-        self.temp_block = 0
-        self.temp_heal = 0
-        self.leech = l
+            a += "\nCrit Chance: " + str(self.crit) + "0%"
+        if self.insta_kill < 0:
+            a += "\nInsta-Kill Chance: " + str(self.insta_kill) + "0%"
+        if self.leech:
+            a += "\nLife steal: 50%"
         return a
+
+
+card = Card(1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
+print(card)
