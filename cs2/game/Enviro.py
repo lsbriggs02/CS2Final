@@ -60,16 +60,16 @@ class Enviro:
     @staticmethod
     def render_button(screen, button, color):
         text = pygame.font.SysFont('Ariel', 30)
-        pygame.draw.rect(screen, color, button.rect, 0, 4)
+        pygame.draw.rect(screen, (255, 255, 255), button.rect, 0, 4)
         pygame.draw.rect(screen, (0, 0, 0), button.rect, 1, 4)
         Enviro.box_text(screen, text, button.rect[0], button.rect[0]+button.rect[2], button.rect[1], button.label, color)
         pygame.display.update()
 
     @staticmethod
     def box_text(surface, font, x_start, x_end, y_start, text, colour):
-        x = x_start
-        y = y_start
-        words = text.split(' ')
+        x = x_start + 10
+        y = y_start + 5
+        words = text.split('\n')
 
         for word in words:
             word_t = font.render(word, True, colour)
@@ -78,37 +78,10 @@ class Enviro:
                 x += word_t.get_width() * 1.1
             else:
                 y += word_t.get_height() * 1.1
-                x = x_start
+                x = x_start + 10
                 surface.blit(word_t, (x, y))
                 x += word_t.get_width() * 1.1
 
-    # pg.init()
-    # screen = pg.display.set_mode((640, 480))
-    # clock = pg.time.Clock()
-    # BG_COLOR = pg.Color('gray12')
-    # BLUE = pg.Color('dodgerblue')
-    # # Triple quoted strings contain newline characters.
-    # text = """Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-    # eiusmod tempor incididunt ut labore et dolore magna aliqua.
-    #
-    # Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-    # nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-    # reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-    # pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-    # culpa qui officia deserunt mollit anim id est laborum."""
-    #
-    # done = False
-    # while not done:
-    #     for event in pg.event.get():
-    #         if event.type == pg.QUIT:
-    #             done = True
-    #
-    #     screen.fill(BG_COLOR)
-    #     ptext.draw(text, (10, 10), color=BLUE)  # Recognizes newline characters.
-    #     pg.display.flip()
-    #     clock.tick(60)
-    #
-    # pg.quit()
 
     @staticmethod
     def inside(point, rect):
@@ -185,10 +158,10 @@ class Enviro:
         for _ in range(4):
             self.add_cards.append(self.gendeck[randint(0, len(self.gendeck) - 1)])
 
-        self.pcard_1 = _Button((100, 250, 140, 200), str(self.add_cards[0]))
-        self.pcard_2 = _Button((250, 250, 140, 200), str(self.add_cards[1]))
-        self.pcard_3 = _Button((400, 250, 140, 200), str(self.add_cards[2]))
-        self.pcard_4 = _Button((550, 250, 140, 200), str(self.add_cards[3]))
+        self.pcard_1 = _Button((50, 50, 225, 200), str(self.add_cards[0]))
+        self.pcard_2 = _Button((50, 300, 225, 200), str(self.add_cards[1]))
+        self.pcard_3 = _Button((475, 50, 225, 200), str(self.add_cards[2]))
+        self.pcard_4 = _Button((475, 300, 225, 200), str(self.add_cards[3]))
 
         Enviro.render_button(self.screen, self.card_num1, (0, 0, 0))
         Enviro.render_button(self.screen, self.card_num2, (0, 0, 0))
@@ -280,7 +253,7 @@ class Enviro:
         self.spawn_level([Enemy(0)])
 
         hover_color = (200, 200, 200)
-        default_color = (255, 255, 255)
+        default_color = (0, 0, 0)
         used_color = (100, 100, 100)
         used_hover_color = (150, 150, 150)
 
