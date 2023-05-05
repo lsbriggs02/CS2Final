@@ -90,6 +90,7 @@ class Enviro:
     add_cards = []
 
     def next(self):
+        self.screen.fill((255, 255, 255))
         _ = 0
         # Reset acting deck with current deck
         if len(self.encounter_deck) <= 5:
@@ -117,12 +118,14 @@ class Enviro:
         self.card_num3 = _Button((280, 550, 140, 30), self.hand[2].name)
         self.card_num4 = _Button((420, 550, 140, 30), self.hand[3].name)
         self.card_num5 = _Button((560, 550, 140, 30), self.hand[4].name)
+        self.next_butt = _Button((710, 550, 80, 30), 'Next')
         # Reset buttons to render with the new names
         Enviro.render_button(self.screen, self.card_num1, (0, 0, 0))
         Enviro.render_button(self.screen, self.card_num2, (0, 0, 0))
         Enviro.render_button(self.screen, self.card_num3, (0, 0, 0))
         Enviro.render_button(self.screen, self.card_num4, (0, 0, 0))
         Enviro.render_button(self.screen, self.card_num5, (0, 0, 0))
+        Enviro.render_button(self.screen, self.next_butt, (0, 0, 0))
 
         self.hand[0].is_not_used = True
         self.hand[1].is_not_used = True
@@ -225,6 +228,12 @@ class Enviro:
         Enviro.render_button(self.screen, self.pcard_4, (0, 0, 0))
 
         self.player_stats(self.player, self.enemy_list[0], self.screen)
+
+        self.hand[0].is_not_used = True
+        self.hand[1].is_not_used = True
+        self.hand[2].is_not_used = True
+        self.hand[3].is_not_used = True
+        self.hand[4].is_not_used = True
 
     def show(self):
         # calculate some convenient variables
@@ -362,19 +371,19 @@ class Enviro:
                 if event.type == pygame.MOUSEBUTTONUP:
                     if self.choosing:
                         if Enviro.inside(event.pos, self.pcard_1.rect):
-                            self.curdeck.append(self.pcard_1)
+                            self.curdeck.append(self.add_cards[0])
                             self.choosing = False
                             self.spawn_level([Enemy(0)])
                         if Enviro.inside(event.pos, self.pcard_2.rect):
-                            self.curdeck.append(self.pcard_2)
+                            self.curdeck.append(self.add_cards[1])
                             self.choosing = False
                             self.spawn_level([Enemy(0)])
                         if Enviro.inside(event.pos, self.pcard_3.rect):
-                            self.curdeck.append(self.pcard_3)
+                            self.curdeck.append(self.add_cards[2])
                             self.choosing = False
                             self.spawn_level([Enemy(0)])
                         if Enviro.inside(event.pos, self.pcard_4.rect):
-                            self.curdeck.append(self.pcard_4)
+                            self.curdeck.append(self.add_cards[3])
                             self.choosing = False
                             self.spawn_level([Enemy(0)])
 
