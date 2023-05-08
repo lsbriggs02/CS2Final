@@ -13,5 +13,6 @@ class Leeching_Attack(Card):
         subject = "Enemy"
         attack = 8
         attack_diff = 2
+        crit = 5
         leech = True
-        super().__init__(name, type, rarity, energy, subject, attack, attack_diff, 0, 0, 0, 0, 0, False, leech)
+        super().__init__(name, type, rarity, energy, subject, attack, attack_diff, 0, 0, 0, 0, crit, False, leech)

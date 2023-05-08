@@ -3,7 +3,7 @@ class Enemy:
     def __init__(self, round, boss=False, fboss=False):
         self.isboss = boss
         self.shield = 0
-        self.health = 15 + round * 2
+        self.health = 25 + round * 4
         if boss:
             self.health = 45 + round * 5
         self.shield_add = 5 + (round / 2)

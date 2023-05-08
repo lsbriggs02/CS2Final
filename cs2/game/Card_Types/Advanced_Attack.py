@@ -9,9 +9,9 @@ class Advanced_Attack(Card):
         name = "Advanced Attack"
         type = "Attack"
         rarity = "Uncommon"
-        energy = 1
+        energy = 2
         subject = "Enemy"
-        damage = 9
+        damage = 11
         damage_diff = 3
-        crit = 4
+        crit = 7
         super().__init__(name, type, rarity, energy, subject, damage, damage_diff, 0, 0, 0, 0, crit)

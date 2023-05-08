@@ -29,8 +29,10 @@ class Card:
             self.is_not_used = False
             if self.heal > 0:
                 self.temp_heal = randint(self.heal - self.heal_diff, self.heal + self.heal_diff)
-            else:
+            elif self.heal_diff > 0:
                 self.temp_heal = randint(0, self.heal + self.heal_diff)
+            else:
+                self.temp_heal = self.heal
             self.temp_damage = 0
             if self.damage > 0:
                 self.temp_damage = randint(self.damage - self.damage_diff, self.damage + self.damage_diff)
@@ -72,7 +74,8 @@ class Card:
                     enem.shield -= self.temp_damage
 
     def __str__(self):
-        a = str(self.name) + "\nType: " + str(self.type) + "\nRarity: "  + str(self.rarity) + "\nEnergy: " + str(self.energy)
+        a = str(self.name) + "\nType: " + str(self.type) + "\nRarity: " + str(self.rarity) + "\nEnergy: " + str(
+            self.energy)
         if self.damage != 0:
             a += "\nDamage: " + str(self.damage)
             if self.damage_diff != 0:
@@ -101,7 +104,3 @@ class Card:
         if self.leech:
             a += "\nLife steal: 50%"
         return a
-
-
-card = Card(1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
-print(card)
