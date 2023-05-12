@@ -31,5 +31,5 @@ class Enemy:
                 play.shield -= self.attack
         elif attack_num == 2:
             self.shield += self.shield_add
-        elif attack_num >= 1:
+        elif attack_num == 1:
             self.health += self.heal
